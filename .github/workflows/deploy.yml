@@ -1,0 +1,26 @@
+name: Deploy to server
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: 72.56.126.248
+          username: root
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            git config --global --add safe.directory /var/www/summary
+            mkdir -p /var/www/summary
+            cd /var/www/summary
+            if [ ! -d .git ]; then
+              git clone https://github.com/claudesiniakov/summary.git .
+            else
+              git pull origin master
+            fi
