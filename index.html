@@ -3,55 +3,197 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Projects</title>
+  <title>VAULT-TEC SYSTEMS // PROJECTS</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+    :root {
+      --green: #5cf542;
+      --green-dim: #3a9e28;
+      --green-dark: #1a4a10;
+      --bg: #0b0f0a;
+      --bg2: #0e140c;
+      --glow: 0 0 6px #5cf54288, 0 0 12px #5cf54244;
+      --glow-strong: 0 0 8px #5cf542cc, 0 0 20px #5cf54266;
+    }
+
     * { margin: 0; padding: 0; box-sizing: border-box; }
+
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #f5f5f5;
+      font-family: 'Share Tech Mono', 'Courier New', monospace;
+      background: var(--bg);
+      color: var(--green);
       padding: 48px 24px;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
     }
+
+    /* CRT scanlines */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        transparent 2px,
+        rgba(0, 0, 0, 0.18) 2px,
+        rgba(0, 0, 0, 0.18) 4px
+      );
+      pointer-events: none;
+      z-index: 100;
+    }
+
+    /* CRT vignette */
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.7) 100%);
+      pointer-events: none;
+      z-index: 101;
+    }
+
+    .screen {
+      max-width: 560px;
+      animation: flicker 8s infinite;
+    }
+
+    @keyframes flicker {
+      0%, 98%, 100% { opacity: 1; }
+      99% { opacity: 0.94; }
+    }
+
+    .header {
+      margin-bottom: 36px;
+    }
+
+    .vault-label {
+      font-size: 11px;
+      letter-spacing: 4px;
+      color: var(--green-dim);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
     h1 {
-      font-size: 24px;
-      font-weight: 600;
-      color: #111;
-      margin-bottom: 32px;
+      font-size: 26px;
+      font-weight: normal;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      text-shadow: var(--glow-strong);
+      line-height: 1;
     }
+
+    .divider {
+      margin: 12px 0;
+      border: none;
+      border-top: 1px solid var(--green-dark);
+      box-shadow: 0 0 6px var(--green-dark);
+    }
+
+    .status-bar {
+      font-size: 11px;
+      color: var(--green-dim);
+      letter-spacing: 2px;
+      margin-bottom: 28px;
+      display: flex;
+      gap: 20px;
+    }
+
+    .status-bar span::before {
+      content: "▶ ";
+    }
+
     .list {
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      max-width: 480px;
+      gap: 8px;
     }
+
     .item {
-      background: #fff;
-      border: 1px solid #e0e0e0;
-      border-radius: 8px;
-      padding: 16px 20px;
+      background: var(--bg2);
+      border: 1px solid var(--green-dark);
+      padding: 14px 18px;
       display: flex;
-      justify-content: space-between;
       align-items: center;
       gap: 16px;
+      position: relative;
+      transition: border-color 0.2s, background 0.2s;
+      cursor: default;
     }
+
+    .item::before {
+      content: "";
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: var(--green-dark);
+      transition: background 0.2s;
+    }
+
+    .item:hover {
+      border-color: var(--green);
+      background: #111a0e;
+    }
+
+    .item:hover::before {
+      background: var(--green);
+      box-shadow: 0 0 8px var(--green);
+    }
+
     .num {
-      font-size: 14px;
-      color: #999;
-      min-width: 20px;
+      font-size: 11px;
+      color: var(--green-dim);
+      min-width: 22px;
     }
+
     .name {
-      font-size: 16px;
-      font-weight: 500;
-      color: #111;
+      font-size: 15px;
+      letter-spacing: 1px;
       flex: 1;
+      text-transform: uppercase;
+      text-shadow: var(--glow);
     }
+
     .link a {
-      font-size: 14px;
-      color: #0066cc;
+      font-size: 12px;
+      color: var(--green-dim);
       text-decoration: none;
+      letter-spacing: 1px;
+      transition: color 0.2s, text-shadow 0.2s;
     }
+
     .link a:hover {
-      text-decoration: underline;
+      color: var(--green);
+      text-shadow: var(--glow-strong);
     }
+
+    .footer {
+      margin-top: 32px;
+      font-size: 11px;
+      color: var(--green-dark);
+      letter-spacing: 2px;
+    }
+
+    /* cursor blink */
+    .cursor {
+      display: inline-block;
+      width: 9px;
+      height: 14px;
+      background: var(--green);
+      vertical-align: middle;
+      margin-left: 4px;
+      animation: blink 1.2s step-end infinite;
+      box-shadow: var(--glow);
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
     /* Moth */
     .moth-wrapper {
       position: fixed;
@@ -63,27 +205,32 @@
       gap: 8px;
       user-select: none;
       pointer-events: none;
+      z-index: 99;
     }
+
     .moth-bubble {
-      background: #fff;
-      border: 1px solid #e0e0e0;
-      border-radius: 12px;
-      padding: 8px 12px;
-      font-size: 12px;
-      color: #555;
+      background: var(--bg2);
+      border: 1px solid var(--green-dark);
+      padding: 7px 12px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px;
+      color: var(--green-dim);
       max-width: 160px;
       text-align: center;
       line-height: 1.4;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      letter-spacing: 1px;
       position: relative;
       opacity: 0;
       transform: translateY(4px);
       transition: opacity 0.4s ease, transform 0.4s ease;
+      text-shadow: var(--glow);
     }
+
     .moth-bubble.visible {
       opacity: 1;
       transform: translateY(0);
     }
+
     .moth-bubble::after {
       content: "";
       position: absolute;
@@ -91,9 +238,10 @@
       left: 50%;
       transform: translateX(-50%);
       border: 7px solid transparent;
-      border-top-color: #e0e0e0;
+      border-top-color: var(--green-dark);
       border-bottom: none;
     }
+
     .moth-bubble::before {
       content: "";
       position: absolute;
@@ -101,14 +249,16 @@
       left: 50%;
       transform: translateX(-50%);
       border: 7px solid transparent;
-      border-top-color: #fff;
+      border-top-color: var(--bg2);
       border-bottom: none;
       z-index: 1;
     }
+
     .moth-ghost {
       animation: moth-float 3s ease-in-out infinite;
-      cursor: default;
+      filter: drop-shadow(0 0 6px #5cf54288);
     }
+
     @keyframes moth-float {
       0%, 100% { transform: translateY(0); }
       50%       { transform: translateY(-6px); }
@@ -116,53 +266,65 @@
   </style>
 </head>
 <body>
-  <h1>Projects</h1>
-  <div class="list">
-    <div class="item">
-      <span class="num">1</span>
-      <span class="name">booking</span>
-      <span class="link"><a href="http://72.56.126.248:8084" target="_blank">72.56.126.248:8084</a></span>
+  <div class="screen">
+    <div class="header">
+      <div class="vault-label">Vault-Tec Corp. // Terminal v4.2</div>
+      <h1>Projects<span class="cursor"></span></h1>
     </div>
-    <div class="item">
-      <span class="num">2</span>
-      <span class="name">ai_gateway</span>
-      <span class="link"><a href="http://72.56.126.248:8085" target="_blank">72.56.126.248:8085</a></span>
+    <hr class="divider">
+    <div class="status-bar">
+      <span>ONLINE</span>
+      <span>4 RECORDS</span>
+      <span>2077.04.04</span>
     </div>
-    <div class="item">
-      <span class="num">3</span>
-      <span class="name">json-formatter</span>
-      <span class="link"><a href="http://72.56.126.248:8081" target="_blank">72.56.126.248:8081</a></span>
+
+    <div class="list">
+      <div class="item">
+        <span class="num">01</span>
+        <span class="name">booking</span>
+        <span class="link"><a href="http://72.56.126.248:8084" target="_blank">72.56.126.248:8084</a></span>
+      </div>
+      <div class="item">
+        <span class="num">02</span>
+        <span class="name">ai_gateway</span>
+        <span class="link"><a href="http://72.56.126.248:8085" target="_blank">72.56.126.248:8085</a></span>
+      </div>
+      <div class="item">
+        <span class="num">03</span>
+        <span class="name">json-formatter</span>
+        <span class="link"><a href="http://72.56.126.248:8081" target="_blank">72.56.126.248:8081</a></span>
+      </div>
+      <div class="item">
+        <span class="num">04</span>
+        <span class="name">release-notes</span>
+        <span class="link"><a href="http://72.56.126.248:8086" target="_blank">72.56.126.248:8086</a></span>
+      </div>
     </div>
-    <div class="item">
-      <span class="num">4</span>
-      <span class="name">release-notes</span>
-      <span class="link"><a href="http://72.56.126.248:8086" target="_blank">72.56.126.248:8086</a></span>
-    </div>
+
+    <div class="footer">// END OF LIST — HAVE A SAFE DAY, CITIZEN</div>
   </div>
 
   <!-- Moth -->
   <div class="moth-wrapper">
     <div class="moth-bubble" id="moth-bubble"></div>
     <svg class="moth-ghost" width="48" height="56" viewBox="0 0 48 56" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <!-- body -->
-      <path d="M4 24C4 12.954 13.163 4 24 4C34.837 4 44 12.954 44 24V44C44 44 40 40 36 44C32 48 28 44 24 44C20 44 16 48 12 44C8 40 4 44 4 44V24Z" fill="#d8d0f0" stroke="#b8aee0" stroke-width="1.5"/>
-      <!-- eyes -->
-      <ellipse cx="17" cy="24" rx="3" ry="3.5" fill="#333"/>
-      <ellipse cx="31" cy="24" rx="3" ry="3.5" fill="#333"/>
-      <!-- eye shine -->
-      <circle cx="18.2" cy="22.5" r="1" fill="white"/>
-      <circle cx="32.2" cy="22.5" r="1" fill="white"/>
+      <path d="M4 24C4 12.954 13.163 4 24 4C34.837 4 44 12.954 44 24V44C44 44 40 40 36 44C32 48 28 44 24 44C20 44 16 48 12 44C8 40 4 44 4 44V24Z" fill="#1a3a12" stroke="#3a8a28" stroke-width="1.5"/>
+      <ellipse cx="17" cy="24" rx="3" ry="3.5" fill="#5cf542"/>
+      <ellipse cx="31" cy="24" rx="3" ry="3.5" fill="#5cf542"/>
+      <circle cx="18.2" cy="22.5" r="1" fill="#cfffca"/>
+      <circle cx="32.2" cy="22.5" r="1" fill="#cfffca"/>
     </svg>
   </div>
 
   <script>
     const phrases = [
       "всё под контролем",
-      "проект номер три — любимчик",
-      "тихо тут сегодня",
-      "я слежу",
+      "радиация в норме",
+      "третий — любимчик",
+      "слежу за периметром",
       "хороший список",
-      "booking... интересно",
+      "booking... подозрительно",
+      "war never changes",
     ];
     const bubble = document.getElementById("moth-bubble");
     let idx = Math.floor(Math.random() * phrases.length);
