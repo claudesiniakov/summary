@@ -274,7 +274,7 @@
     <hr class="divider">
     <div class="status-bar">
       <span>ONLINE</span>
-      <span>6 RECORDS</span>
+      <span id="rec-count">6 RECORDS</span>
       <span>2077.04.04</span>
     </div>
 
@@ -356,6 +356,9 @@
     }
 
     setTimeout(show, 2000);
+
+    const n = document.querySelectorAll('.item').length;
+    document.getElementById('rec-count').textContent = n + ' RECORDS';
   </script>
 </body>
 </html>
