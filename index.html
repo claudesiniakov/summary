@@ -275,7 +275,7 @@
     <div class="status-bar">
       <span>ONLINE</span>
       <span id="rec-count">6 RECORDS</span>
-      <span>2077.04.04</span>
+      <span id="date-display"></span>
     </div>
 
     <div class="list">
@@ -359,6 +359,11 @@
 
     const n = document.querySelectorAll('.item').length;
     document.getElementById('rec-count').textContent = n + ' RECORDS';
+
+    const now = new Date();
+    const mm = String(now.getMonth() + 1).padStart(2, '0');
+    const dd = String(now.getDate()).padStart(2, '0');
+    document.getElementById('date-display').textContent = `2077.${mm}.${dd}`;
   </script>
 </body>
 </html>
