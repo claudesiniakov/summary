@@ -121,7 +121,7 @@
       gap: 16px;
       position: relative;
       transition: border-color 0.2s, background 0.2s;
-      cursor: default;
+      cursor: pointer;
     }
 
     .item::before {
@@ -157,15 +157,15 @@
       text-shadow: var(--glow);
     }
 
-    .link a {
+    .item { text-decoration: none; color: inherit; }
+
+    .link {
       font-size: 12px;
       color: var(--green-dim);
-      text-decoration: none;
       letter-spacing: 1px;
-      transition: color 0.2s, text-shadow 0.2s;
     }
 
-    .link a:hover {
+    .item:hover .link {
       color: var(--green);
       text-shadow: var(--glow-strong);
     }
@@ -279,41 +279,41 @@
     </div>
 
     <div class="list">
-      <div class="item">
+      <a class="item" href="http://72.56.126.248:8084" target="_blank">
         <span class="num">01</span>
         <span class="name">booking</span>
-        <span class="link"><a href="http://72.56.126.248:8084" target="_blank">72.56.126.248:8084</a></span>
-      </div>
-      <div class="item">
+        <span class="link">72.56.126.248:8084</span>
+      </a>
+      <a class="item" href="http://72.56.126.248:8085" target="_blank">
         <span class="num">02</span>
         <span class="name">ai_gateway</span>
-        <span class="link"><a href="http://72.56.126.248:8085" target="_blank">72.56.126.248:8085</a></span>
-      </div>
-      <div class="item">
+        <span class="link">72.56.126.248:8085</span>
+      </a>
+      <a class="item" href="http://72.56.126.248:8081" target="_blank">
         <span class="num">03</span>
         <span class="name">json-formatter</span>
-        <span class="link"><a href="http://72.56.126.248:8081" target="_blank">72.56.126.248:8081</a></span>
-      </div>
-      <div class="item">
+        <span class="link">72.56.126.248:8081</span>
+      </a>
+      <a class="item" href="http://72.56.126.248:8086" target="_blank">
         <span class="num">04</span>
         <span class="name">release-notes</span>
-        <span class="link"><a href="http://72.56.126.248:8086" target="_blank">72.56.126.248:8086</a></span>
-      </div>
-      <div class="item">
+        <span class="link">72.56.126.248:8086</span>
+      </a>
+      <a class="item" href="http://72.56.126.248:8087" target="_blank">
         <span class="num">05</span>
         <span class="name">analyst-editor</span>
-        <span class="link"><a href="http://72.56.126.248:8087" target="_blank">72.56.126.248:8087</a></span>
-      </div>
-      <div class="item">
+        <span class="link">72.56.126.248:8087</span>
+      </a>
+      <a class="item" href="http://72.56.126.248:8089" target="_blank">
         <span class="num">06</span>
         <span class="name">mock-generator</span>
-        <span class="link"><a href="http://72.56.126.248:8089" target="_blank">72.56.126.248:8089</a></span>
-      </div>
-      <div class="item">
+        <span class="link">72.56.126.248:8089</span>
+      </a>
+      <a class="item" href="http://72.56.126.248:8090" target="_blank">
         <span class="num">07</span>
         <span class="name">encoder</span>
-        <span class="link"><a href="http://72.56.126.248:8090" target="_blank">72.56.126.248:8090</a></span>
-      </div>
+        <span class="link">72.56.126.248:8090</span>
+      </a>
     </div>
 
     <div class="footer">// END OF LIST — HAVE A SAFE DAY, CITIZEN</div>
