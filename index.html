@@ -254,68 +254,74 @@
 
     .moth-svg-wrap {
       cursor: pointer;
-      filter: drop-shadow(0 0 7px #5cf54255);
-      transition: filter 0.2s;
+      animation: ghost-float 5s ease-in-out infinite, ghost-glow 3s ease-in-out infinite;
+      transition: opacity 0.4s;
     }
 
-    .moth-svg-wrap:hover { filter: drop-shadow(0 0 12px #5cf542aa); }
-
-    /* float */
-    .moth-svg-wrap { animation: moth-float 3.2s ease-in-out infinite; }
-
-    @keyframes moth-float {
-      0%, 100% { transform: translateY(0) rotate(0deg); }
-      30%       { transform: translateY(-7px) rotate(-1deg); }
-      70%       { transform: translateY(-4px) rotate(1deg); }
+    /* ghost float — медленный дрейф с лёгким наклоном */
+    @keyframes ghost-float {
+      0%   { transform: translateY(0)    translateX(0)   rotate(0deg);  opacity: 0.82; }
+      20%  { transform: translateY(-9px) translateX(3px) rotate(1.5deg); opacity: 1; }
+      50%  { transform: translateY(-6px) translateX(-2px) rotate(-1deg); opacity: 0.9; }
+      75%  { transform: translateY(-11px) translateX(4px) rotate(1deg); opacity: 1; }
+      100% { transform: translateY(0)    translateX(0)   rotate(0deg);  opacity: 0.82; }
     }
 
-    /* wings */
-    #wing-l { transform-box: fill-box; transform-origin: 100% 50%; animation: flap-l 1.6s ease-in-out infinite; }
-    #wing-r { transform-box: fill-box; transform-origin: 0% 50%;   animation: flap-r 1.6s ease-in-out infinite; }
-
-    @keyframes flap-l {
-      0%, 100% { transform: rotateY(0deg) scaleY(1); }
-      50%       { transform: rotateY(55deg) scaleY(0.85); }
-    }
-    @keyframes flap-r {
-      0%, 100% { transform: rotateY(0deg) scaleY(1); }
-      50%       { transform: rotateY(-55deg) scaleY(0.85); }
+    /* glow pulse */
+    @keyframes ghost-glow {
+      0%, 100% { filter: drop-shadow(0 0 5px #5cf54244) drop-shadow(0 0 14px #5cf54218); }
+      50%       { filter: drop-shadow(0 0 14px #5cf542aa) drop-shadow(0 0 28px #5cf54244); }
     }
 
-    /* scared shake */
-    .moth-svg-wrap.scared { animation: moth-shake 0.4s ease-in-out, moth-float 3.2s ease-in-out 0.4s infinite; }
+    /* wings — плавают вверх-вниз, не машут */
+    #wing-l { transform-box: fill-box; transform-origin: 100% 50%; animation: ghost-wing-l 5s ease-in-out infinite; }
+    #wing-r { transform-box: fill-box; transform-origin: 0%   50%; animation: ghost-wing-r 5s ease-in-out infinite; }
 
-    @keyframes moth-shake {
-      0%,100% { transform: translateX(0); }
-      20%     { transform: translateX(-5px) rotate(-3deg); }
-      40%     { transform: translateX(5px) rotate(3deg); }
+    @keyframes ghost-wing-l {
+      0%, 100% { transform: rotate(0deg)   translateY(0); }
+      40%       { transform: rotate(-10deg) translateY(-5px); }
+      70%       { transform: rotate(-5deg)  translateY(-3px); }
+    }
+    @keyframes ghost-wing-r {
+      0%, 100% { transform: rotate(0deg)  translateY(0); }
+      40%       { transform: rotate(10deg) translateY(-5px); }
+      70%       { transform: rotate(5deg)  translateY(-3px); }
+    }
+
+    /* scared */
+    .moth-svg-wrap.scared { animation: ghost-shake 0.45s ease-in-out, ghost-float 5s ease-in-out 0.45s infinite, ghost-glow 3s ease-in-out infinite; }
+
+    @keyframes ghost-shake {
+      0%,100% { transform: translateX(0) rotate(0deg); }
+      20%     { transform: translateX(-6px) rotate(-4deg); }
+      40%     { transform: translateX(6px)  rotate(4deg); }
       60%     { transform: translateX(-4px) rotate(-2deg); }
-      80%     { transform: translateX(4px) rotate(2deg); }
+      80%     { transform: translateX(4px)  rotate(2deg); }
     }
 
-    /* excited spin on click */
-    .moth-svg-wrap.excited { animation: moth-spin 0.5s cubic-bezier(.4,0,.2,1), moth-float 3.2s ease-in-out 0.5s infinite; }
+    /* excited */
+    .moth-svg-wrap.excited { animation: ghost-spin 0.55s cubic-bezier(.4,0,.2,1), ghost-float 5s ease-in-out 0.55s infinite, ghost-glow 3s ease-in-out infinite; }
 
-    @keyframes moth-spin {
-      0%   { transform: rotate(0deg) scale(1); }
-      50%  { transform: rotate(200deg) scale(1.2); }
+    @keyframes ghost-spin {
+      0%   { transform: rotate(0deg)   scale(1); }
+      50%  { transform: rotate(200deg) scale(1.25); }
       100% { transform: rotate(360deg) scale(1); }
     }
 
-    /* sleeping slow bob */
+    /* sleeping */
     .moth-svg-wrap.sleeping {
-      animation: moth-sleep 5s ease-in-out infinite;
-      filter: drop-shadow(0 0 4px #5cf54233);
+      animation: ghost-sleep 6s ease-in-out infinite;
+      filter: drop-shadow(0 0 4px #5cf54222);
     }
 
-    @keyframes moth-sleep {
-      0%, 100% { transform: translateY(0) rotate(-2deg); }
-      50%       { transform: translateY(-3px) rotate(2deg); }
+    @keyframes ghost-sleep {
+      0%, 100% { transform: translateY(0)    rotate(-1.5deg); opacity: 0.55; }
+      50%       { transform: translateY(-4px) rotate(1.5deg);  opacity: 0.7; }
     }
 
-    /* fast flap burst */
-    .moth-svg-wrap.burst #wing-l { animation: flap-l 0.3s ease-in-out infinite; }
-    .moth-svg-wrap.burst #wing-r { animation: flap-r 0.3s ease-in-out infinite; }
+    /* burst wings speed up */
+    .moth-svg-wrap.burst #wing-l { animation: ghost-wing-l 0.8s ease-in-out infinite; }
+    .moth-svg-wrap.burst #wing-r { animation: ghost-wing-r 0.8s ease-in-out infinite; }
 
     /* zzz */
     .moth-zzz {
