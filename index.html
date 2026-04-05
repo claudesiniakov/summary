@@ -194,17 +194,16 @@
       50% { opacity: 0; }
     }
 
-    /* Moth */
+    /* ── Moth ── */
     .moth-wrapper {
       position: fixed;
-      bottom: 28px;
-      right: 28px;
+      bottom: 24px;
+      right: 24px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       user-select: none;
-      pointer-events: none;
       z-index: 102;
     }
 
@@ -215,27 +214,27 @@
       font-family: 'Share Tech Mono', monospace;
       font-size: 11px;
       color: var(--green-dim);
-      max-width: 160px;
+      max-width: 170px;
       text-align: center;
-      line-height: 1.4;
-      letter-spacing: 1px;
+      line-height: 1.5;
+      letter-spacing: 0.5px;
       position: relative;
       opacity: 0;
-      transform: translateY(4px);
-      transition: opacity 0.4s ease, transform 0.4s ease;
+      transform: translateY(6px) scale(0.95);
+      transition: opacity 0.35s ease, transform 0.35s cubic-bezier(.4,0,.2,1);
       text-shadow: var(--glow);
+      pointer-events: none;
     }
 
     .moth-bubble.visible {
       opacity: 1;
-      transform: translateY(0);
+      transform: translateY(0) scale(1);
     }
 
     .moth-bubble::after {
       content: "";
       position: absolute;
-      bottom: -7px;
-      left: 50%;
+      bottom: -7px; left: 50%;
       transform: translateX(-50%);
       border: 7px solid transparent;
       border-top-color: var(--green-dark);
@@ -245,8 +244,7 @@
     .moth-bubble::before {
       content: "";
       position: absolute;
-      bottom: -6px;
-      left: 50%;
+      bottom: -6px; left: 50%;
       transform: translateX(-50%);
       border: 7px solid transparent;
       border-top-color: var(--bg2);
@@ -254,14 +252,89 @@
       z-index: 1;
     }
 
-    .moth-ghost {
-      animation: moth-float 3s ease-in-out infinite;
-      filter: drop-shadow(0 0 6px #5cf54288);
+    .moth-svg-wrap {
+      cursor: pointer;
+      filter: drop-shadow(0 0 7px #5cf54255);
+      transition: filter 0.2s;
     }
 
+    .moth-svg-wrap:hover { filter: drop-shadow(0 0 12px #5cf542aa); }
+
+    /* float */
+    .moth-svg-wrap { animation: moth-float 3.2s ease-in-out infinite; }
+
     @keyframes moth-float {
-      0%, 100% { transform: translateY(0); }
-      50%       { transform: translateY(-6px); }
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      30%       { transform: translateY(-7px) rotate(-1deg); }
+      70%       { transform: translateY(-4px) rotate(1deg); }
+    }
+
+    /* wings */
+    #wing-l { transform-box: fill-box; transform-origin: 100% 50%; animation: flap-l 1.6s ease-in-out infinite; }
+    #wing-r { transform-box: fill-box; transform-origin: 0% 50%;   animation: flap-r 1.6s ease-in-out infinite; }
+
+    @keyframes flap-l {
+      0%, 100% { transform: rotateY(0deg) scaleY(1); }
+      50%       { transform: rotateY(55deg) scaleY(0.85); }
+    }
+    @keyframes flap-r {
+      0%, 100% { transform: rotateY(0deg) scaleY(1); }
+      50%       { transform: rotateY(-55deg) scaleY(0.85); }
+    }
+
+    /* scared shake */
+    .moth-svg-wrap.scared { animation: moth-shake 0.4s ease-in-out, moth-float 3.2s ease-in-out 0.4s infinite; }
+
+    @keyframes moth-shake {
+      0%,100% { transform: translateX(0); }
+      20%     { transform: translateX(-5px) rotate(-3deg); }
+      40%     { transform: translateX(5px) rotate(3deg); }
+      60%     { transform: translateX(-4px) rotate(-2deg); }
+      80%     { transform: translateX(4px) rotate(2deg); }
+    }
+
+    /* excited spin on click */
+    .moth-svg-wrap.excited { animation: moth-spin 0.5s cubic-bezier(.4,0,.2,1), moth-float 3.2s ease-in-out 0.5s infinite; }
+
+    @keyframes moth-spin {
+      0%   { transform: rotate(0deg) scale(1); }
+      50%  { transform: rotate(200deg) scale(1.2); }
+      100% { transform: rotate(360deg) scale(1); }
+    }
+
+    /* sleeping slow bob */
+    .moth-svg-wrap.sleeping {
+      animation: moth-sleep 5s ease-in-out infinite;
+      filter: drop-shadow(0 0 4px #5cf54233);
+    }
+
+    @keyframes moth-sleep {
+      0%, 100% { transform: translateY(0) rotate(-2deg); }
+      50%       { transform: translateY(-3px) rotate(2deg); }
+    }
+
+    /* fast flap burst */
+    .moth-svg-wrap.burst #wing-l { animation: flap-l 0.3s ease-in-out infinite; }
+    .moth-svg-wrap.burst #wing-r { animation: flap-r 0.3s ease-in-out infinite; }
+
+    /* zzz */
+    .moth-zzz {
+      position: absolute;
+      top: -8px; right: -16px;
+      font-size: 11px;
+      color: var(--green-dim);
+      letter-spacing: 1px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.6s;
+    }
+
+    .moth-zzz.visible { opacity: 1; animation: zzz-drift 3s ease-in-out infinite; }
+
+    @keyframes zzz-drift {
+      0%   { transform: translate(0, 0) scale(0.8); opacity: 0.3; }
+      50%  { transform: translate(4px, -8px) scale(1.1); opacity: 0.8; }
+      100% { transform: translate(8px, -16px) scale(0.6); opacity: 0; }
     }
   </style>
 </head>
@@ -320,50 +393,257 @@
   </div>
 
   <!-- Moth -->
-  <div class="moth-wrapper">
+  <div class="moth-wrapper" id="mothWrapper">
     <div class="moth-bubble" id="moth-bubble"></div>
-    <svg class="moth-ghost" width="48" height="56" viewBox="0 0 48 56" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M4 24C4 12.954 13.163 4 24 4C34.837 4 44 12.954 44 24V44C44 44 40 40 36 44C32 48 28 44 24 44C20 44 16 48 12 44C8 40 4 44 4 44V24Z" fill="#1a3a12" stroke="#3a8a28" stroke-width="1.5"/>
-      <ellipse cx="17" cy="24" rx="3" ry="3.5" fill="#5cf542"/>
-      <ellipse cx="31" cy="24" rx="3" ry="3.5" fill="#5cf542"/>
-      <circle cx="18.2" cy="22.5" r="1" fill="#cfffca"/>
-      <circle cx="32.2" cy="22.5" r="1" fill="#cfffca"/>
-    </svg>
+    <div style="position:relative">
+      <span class="moth-zzz" id="moth-zzz">z z z</span>
+      <div class="moth-svg-wrap" id="mothSvg">
+        <svg width="80" height="72" viewBox="0 0 80 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <filter id="eye-glow" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur stdDeviation="1.5" result="b"/>
+              <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          </defs>
+          <!-- Wings -->
+          <ellipse id="wing-l" cx="18" cy="34" rx="18" ry="10" fill="#0d2009" stroke="#1e4210" stroke-width="1.2"/>
+          <ellipse id="wing-r" cx="62" cy="34" rx="18" ry="10" fill="#0d2009" stroke="#1e4210" stroke-width="1.2"/>
+          <!-- Wing inner markings -->
+          <ellipse cx="20" cy="36" rx="10" ry="5" fill="#152d0e" opacity="0.5" style="pointer-events:none"/>
+          <ellipse cx="60" cy="36" rx="10" ry="5" fill="#152d0e" opacity="0.5" style="pointer-events:none"/>
+          <!-- Antennae -->
+          <path d="M35 16 Q29 8 25 4" stroke="#2d6020" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+          <path d="M45 16 Q51 8 55 4" stroke="#2d6020" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+          <circle cx="25" cy="4" r="2.2" fill="#5cf542" filter="url(#eye-glow)"/>
+          <circle cx="55" cy="4" r="2.2" fill="#5cf542" filter="url(#eye-glow)"/>
+          <!-- Body -->
+          <path d="M33 14C33 7 47 7 47 14V54C47 54 44 50 40 50C36 50 33 54 33 54V14Z" fill="#1a3a12" stroke="#3a8a28" stroke-width="1.5"/>
+          <!-- Eyes -->
+          <ellipse id="eye-l" cx="37.5" cy="30" rx="3.5" ry="4" fill="#5cf542" filter="url(#eye-glow)"/>
+          <ellipse id="eye-r" cx="42.5" cy="30" rx="3.5" ry="4" fill="#5cf542" filter="url(#eye-glow)"/>
+          <!-- Pupils -->
+          <circle id="pupil-l" cx="38.5" cy="29" r="1.4" fill="#cfffca"/>
+          <circle id="pupil-r" cx="43.5" cy="29" r="1.4" fill="#cfffca"/>
+          <!-- Blink (covers eyes when sleeping/blinking) -->
+          <ellipse id="blink-l" cx="37.5" cy="30" rx="3.5" ry="0.6" fill="#1a3a12" opacity="0"/>
+          <ellipse id="blink-r" cx="42.5" cy="30" rx="3.5" ry="0.6" fill="#1a3a12" opacity="0"/>
+          <!-- Tail -->
+          <path d="M33 54 Q36 59 40 56 Q44 59 47 54" stroke="#2d6020" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
   </div>
 
   <script>
-    const phrases = [
-      "всё под контролем",
-      "радиация в норме",
-      "третий — любимчик",
-      "слежу за периметром",
-      "хороший список",
-      "booking... подозрительно",
-      "war never changes",
-    ];
-    const bubble = document.getElementById("moth-bubble");
-    let idx = Math.floor(Math.random() * phrases.length);
-
-    function show() {
-      bubble.textContent = phrases[idx];
-      bubble.classList.add("visible");
-      idx = (idx + 1) % phrases.length;
-      setTimeout(hide, 4000);
-    }
-    function hide() {
-      bubble.classList.remove("visible");
-      setTimeout(show, 8000 + Math.random() * 6000);
-    }
-
-    setTimeout(show, 2000);
-
+    // ── date & records ──────────────────────────────────────────────────────────
     const n = document.querySelectorAll('.item').length;
     document.getElementById('rec-count').textContent = n + ' RECORDS';
-
     const now = new Date();
     const mm = String(now.getMonth() + 1).padStart(2, '0');
     const dd = String(now.getDate()).padStart(2, '0');
     document.getElementById('date-display').textContent = `2077.${mm}.${dd}`;
+
+    // ── Moth ─────────────────────────────────────────────────────────────────────
+    const bubble   = document.getElementById('moth-bubble');
+    const mothSvg  = document.getElementById('mothSvg');
+    const mothZzz  = document.getElementById('moth-zzz');
+    const pupilL   = document.getElementById('pupil-l');
+    const pupilR   = document.getElementById('pupil-r');
+    const blinkL   = document.getElementById('blink-l');
+    const blinkR   = document.getElementById('blink-r');
+
+    // Phrases
+    const idlePhrases = [
+      "всё под контролем",
+      "радиация в норме",
+      "слежу за периметром",
+      "хороший список",
+      "war never changes",
+      "тихо как в Vault 13",
+      "сканирую угрозы...",
+      "периметр чист",
+      "где-то есть Nuka-Cola",
+      "не смотри на меня",
+    ];
+
+    const itemPhrases = {
+      'booking':         ['бронь... или слежка?', 'место забронировано', 'кто-нибудь сидит?'],
+      'ai_gateway':      ['ИИ? пахнет серой', 'осторожно с роботами', 'Skynet? нет-нет-нет'],
+      'json-formatter':  ['{ красиво }', '"moth": true', 'отступы — это важно'],
+      'release-notes':   ['кто-то что-то сломал', 'changelog detected', 'v?.?.? — osторожно'],
+      'analyst-editor':  ['анализируй меня', 'данные не лгут', 'что-то подозрительное'],
+      'mock-generator':  ['фейк? везде фейки', 'сгенерирован случайно', 'mock != real'],
+      'encoder':         ['шифруй всё', 'base64... я слежу', 'decode: moth loves you'],
+    };
+
+    const scaredPhrases  = ['АА!', 'слишком быстро!', 'осторожнее!', 'не пугай меня!'];
+    const excitedPhrases = ['ура!', 'кликнул!', 'я здесь!', 'привет!', '♥'];
+    const sleepPhrases   = ['z z z', 'zzz...', 'сплю...'];
+
+    // State
+    let state        = 'normal'; // normal | scared | sleeping | excited
+    let idleTimer    = null;
+    let hideTimer    = null;
+    let showTimer    = null;
+    let idleIdx      = Math.floor(Math.random() * idlePhrases.length);
+    let lastMouseX   = 0, lastMouseY = 0;
+    let mouseSpeed   = 0;
+    let scaredCooldown = false;
+
+    // ── bubble helpers ────────────────────────────────────────────────────────
+    function showBubble(text, duration = 3500) {
+      clearTimeout(hideTimer);
+      bubble.textContent = text;
+      bubble.classList.add('visible');
+      hideTimer = setTimeout(() => bubble.classList.remove('visible'), duration);
+    }
+
+    function hideBubble() {
+      clearTimeout(hideTimer);
+      bubble.classList.remove('visible');
+    }
+
+    // ── idle phrase loop ──────────────────────────────────────────────────────
+    function scheduleIdle() {
+      clearTimeout(showTimer);
+      showTimer = setTimeout(() => {
+        if (state === 'normal') {
+          showBubble(idlePhrases[idleIdx], 4000);
+          idleIdx = (idleIdx + 1) % idlePhrases.length;
+          setTimeout(scheduleIdle, 12000 + Math.random() * 8000);
+        }
+      }, 10000 + Math.random() * 8000);
+    }
+
+    scheduleIdle();
+    setTimeout(() => { if (state === 'normal') showBubble(idlePhrases[idleIdx], 3500); scheduleIdle(); }, 2500);
+
+    // ── blink ─────────────────────────────────────────────────────────────────
+    function doBlink() {
+      if (state === 'sleeping') return;
+      [blinkL, blinkR].forEach(el => {
+        el.style.transition = 'none';
+        el.setAttribute('ry', '4');
+        el.setAttribute('opacity', '1');
+        setTimeout(() => {
+          el.setAttribute('ry', '0.6');
+          el.setAttribute('opacity', '0');
+        }, 120);
+      });
+    }
+
+    setInterval(() => {
+      if (state !== 'sleeping') doBlink();
+    }, 4000 + Math.random() * 3000);
+
+    // ── eye tracking ─────────────────────────────────────────────────────────
+    document.addEventListener('mousemove', e => {
+      // speed
+      const dx = e.clientX - lastMouseX, dy = e.clientY - lastMouseY;
+      mouseSpeed = Math.sqrt(dx * dx + dy * dy);
+      lastMouseX = e.clientX; lastMouseY = e.clientY;
+
+      // wake from sleep
+      if (state === 'sleeping') wakeUp();
+
+      // scared
+      if (mouseSpeed > 80 && !scaredCooldown && state === 'normal') {
+        triggerScared();
+      }
+
+      // eye tracking
+      const rect = mothSvg.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      const angle = Math.atan2(e.clientY - cy, e.clientX - cx);
+      const dist  = Math.min(1.5, Math.hypot(e.clientX - cx, e.clientY - cy) / 80);
+      const ox = Math.cos(angle) * dist;
+      const oy = Math.sin(angle) * dist;
+
+      pupilL.setAttribute('cx', 38.5 + ox);
+      pupilL.setAttribute('cy', 29   + oy);
+      pupilR.setAttribute('cx', 43.5 + ox);
+      pupilR.setAttribute('cy', 29   + oy);
+    });
+
+    // ── scared ────────────────────────────────────────────────────────────────
+    function triggerScared() {
+      if (scaredCooldown) return;
+      state = 'scared';
+      scaredCooldown = true;
+      mothSvg.classList.remove('sleeping', 'excited', 'burst');
+      mothSvg.classList.add('scared');
+      showBubble(scaredPhrases[Math.floor(Math.random() * scaredPhrases.length)], 2000);
+      mothZzz.classList.remove('visible');
+      setTimeout(() => {
+        mothSvg.classList.remove('scared');
+        state = 'normal';
+        setTimeout(() => { scaredCooldown = false; }, 3000);
+      }, 450);
+    }
+
+    // ── sleeping ──────────────────────────────────────────────────────────────
+    function goSleep() {
+      if (state !== 'normal') return;
+      state = 'sleeping';
+      mothSvg.classList.add('sleeping');
+      mothZzz.classList.add('visible');
+      blinkL.setAttribute('opacity', '1'); blinkL.setAttribute('ry', '4');
+      blinkR.setAttribute('opacity', '1'); blinkR.setAttribute('ry', '4');
+      showBubble(sleepPhrases[Math.floor(Math.random() * sleepPhrases.length)], 99999);
+    }
+
+    function wakeUp() {
+      if (state !== 'sleeping') return;
+      state = 'normal';
+      mothSvg.classList.remove('sleeping');
+      mothZzz.classList.remove('visible');
+      blinkL.setAttribute('opacity', '0');
+      blinkR.setAttribute('opacity', '0');
+      hideBubble();
+      setTimeout(() => showBubble('проснулся...', 2500), 300);
+      scheduleIdle();
+    }
+
+    function resetSleepTimer() {
+      clearTimeout(idleTimer);
+      idleTimer = setTimeout(goSleep, 45000);
+    }
+
+    document.addEventListener('mousemove', resetSleepTimer);
+    resetSleepTimer();
+
+    // ── excited (click moth) ──────────────────────────────────────────────────
+    mothSvg.addEventListener('click', () => {
+      if (state === 'sleeping') { wakeUp(); return; }
+      state = 'excited';
+      mothSvg.classList.remove('scared', 'sleeping');
+      mothSvg.classList.add('excited', 'burst');
+      showBubble(excitedPhrases[Math.floor(Math.random() * excitedPhrases.length)], 2000);
+      setTimeout(() => {
+        mothSvg.classList.remove('excited', 'burst');
+        state = 'normal';
+      }, 600);
+      resetSleepTimer();
+    });
+
+    // ── item hover ────────────────────────────────────────────────────────────
+    document.querySelectorAll('.item').forEach(item => {
+      const name = item.querySelector('.name')?.textContent?.trim().toLowerCase();
+      const phrases = itemPhrases[name];
+      if (!phrases) return;
+
+      let hoverTimer;
+      item.addEventListener('mouseenter', () => {
+        hoverTimer = setTimeout(() => {
+          if (state === 'normal') {
+            const p = phrases[Math.floor(Math.random() * phrases.length)];
+            showBubble(p, 3000);
+          }
+        }, 400);
+      });
+      item.addEventListener('mouseleave', () => clearTimeout(hoverTimer));
+    });
   </script>
 </body>
 </html>
